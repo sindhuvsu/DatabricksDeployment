@@ -30,7 +30,7 @@ jobs:
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}" --token <(echo "DEV_DATABRICKS_TOKEN")
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}" --token <(echo "$DEV_DATABRICKS_TOKEN")
 
       - name: Deploy Notebooks 1 export
         run: |
