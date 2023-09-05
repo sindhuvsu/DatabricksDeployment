@@ -21,6 +21,16 @@ jobs:
       - name: Install Databricks CLI
         run: pip install databricks-cli
 
+
+      - name: test connect 2
+        run: |
+          # Authenticate to DEV Databricks
+          echo "$DEV_DATABRICKS_HOST" 
+      
+      - name: test connect
+        run: |
+          # Authenticate to DEV Databricks
+          echo "${{ secrets.DEV_DATABRICKS_HOST }}" 
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
