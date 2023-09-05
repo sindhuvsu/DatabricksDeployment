@@ -24,18 +24,18 @@ jobs:
       - name: Deploy Notebooks
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --token "$DEV_DATABRICKS_HOST" --token "$DEV_DATABRICKS_TOKEN"
+          databricks configure --token "${{ secrets.DEV_DATABRICKS_HOST }}" --token "${{ secrets.DEV_DATABRICKS_TOKEN }}"
 
           # Export notebooks from DEV workspace
           databricks workspace export_dir notebooks/Shared/DQ.py /tmp/dev_notebooks
 
           # Authenticate to PROD Databricks
-          databricks configure --token "$PROD_DATABRICKS_HOST" --token "$PROD_DATABRICKS_TOKEN"
+          databricks configure --token "${{ secrets.PROD_DATABRICKS_HOST }}" --token "${{ secrets.PROD_DATABRICKS_TOKEN }}"
 
           # Import notebooks to PROD workspace
           databricks workspace import_dir /tmp/dev_notebooks notebooks/Shared --overwrite
-    env:
-      DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
-      DEV_DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
-      PROD_DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
-      PROD_DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+    # env:
+    #   DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
+    #   DEV_DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
+    #   PROD_DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
+    #   PROD_DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
