@@ -29,14 +29,16 @@ jobs:
 
       - name: Deploy Notebooks 1 connect 0
         run: |
-          # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}" --token 
+          # save tokens
+          echo "$DEV_DATABRICKS_TOKEN" > dev_token_file.txt
+          echo "PROD_DATABRICKS_TOKEN" > prod_token_file.txt
+
 
           
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}" --token < echo "$DEV_DATABRICKS_TOKEN"
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
 
       - name: Deploy Notebooks 1 export
         run: |
@@ -46,7 +48,7 @@ jobs:
       - name: Deploy Notebooks 2 connect 
         run: |  
             # Authenticate to PROD Databricks
-            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}" --token < echo "PROD_DATABRICKS_TOKEN"
+            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt
   
       - name: Deploy Notebooks 2 import
         run: |  
