@@ -1,48 +1,41 @@
-name: Notebook Deployment - Databricks
+name: Deploy Notebooks from DEV to PROD
+
 on:
-  workflow_call:
-    inputs:
-      databricks_code_path:
-        description: Databricks Service Path
-        type: string
-        required: true
-      
-      service_code_file:
-        description: python code file path
-        type: string
-        required: true
-    
-  secrets:
-    DATABRICKS_HOST_URL:
-      description:   'Databricks workspace URL'
-      required: true
-    DATABRICKS_TOKEN:
-      description: 'Access token for Databricks CLI'
-      required: true
+  push:
+    branches:
+      - main  # You can customize this branch as needed
 
 jobs:
-  push_to_db:
+  deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v3.3.0
-      
-      - name: Set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
 
-      - name: Databricks CLI config
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x  # Use the version you need
+
+      - name: Install Databricks CLI
+        run: pip install databricks-cli
+
+      - name: Deploy Notebooks
         run: |
-            pip install databricks-cli 
-            cat > ~/.databrickscfg << EOF 
-            [DEFAULT] 
-            host = ${{ secrets.DATABRICKS_HOST_URL }} 
-            token = ${{ secrets.DATABRICKS_TOKEN }} 
-            jobs-api-version = 2.1 
-            EOF 
-    
-      - name: Deploy code to databricks workspace
-        run: |
-            databricks workspace import ${{ inputs.service_code_file }} ${{ inputs.databricks_code_path }} --language python --overwrite
+          # Authenticate to DEV Databricks
+          databricks configure --token "$DEV_DATABRICKS_HOST" --token "$DEV_DATABRICKS_TOKEN"
+
+          # Export notebooks from DEV workspace
+          databricks workspace export_dir notebooks/Shared/DQ.py /tmp/dev_notebooks
+
+          # Authenticate to PROD Databricks
+          databricks configure --token "$PROD_DATABRICKS_HOST" --token "$PROD_DATABRICKS_TOKEN"
+
+          # Import notebooks to PROD workspace
+          databricks workspace import_dir /tmp/dev_notebooks notebooks/Shared --overwrite
+    env:
+      DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
+      DEV_DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
+      PROD_DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
+      PROD_DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
