@@ -26,23 +26,24 @@ jobs:
           # save tokens
           echo ${{ secrets.DEV_DATABRICKS_HOST }} > dev_token_file.txt
           echo ${{ secrets.PROD_DATABRICKS_HOST }} > prod_token_file.txt
+          mkdir dev_notebooks
 
       # - name: Deploy Notebooks 1 connect test
       #   run: |
       #     # Authenticate to DEV Databricks
       #     databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file dev_token_file.txt
         
-      - name: Deploy Notebooks 1 connect test 2
-        run: |
-          # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
+      # - name: Deploy Notebooks 1 connect test 2
+      #   run: |
+      #     # Authenticate to DEV Databricks
+      #     databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
 
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
           databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
           # Export notebooks from DEV workspace
-          databricks workspace export Shared/DQ.py /tmp/dev_notebooks
+          databricks workspace export /Shared/DQ /tmp/dev_notebooks
 
       - name: Deploy Notebooks 2 connect 
         run: |  
