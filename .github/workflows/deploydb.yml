@@ -42,14 +42,14 @@ jobs:
           # Authenticate to DEV Databricks
           databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
           # Export notebooks from DEV workspace
-          databricks workspace export_dir Shared/DQ.py /tmp/dev_notebooks
+          databricks workspace export Shared/DQ.py /tmp/dev_notebooks
 
       - name: Deploy Notebooks 2 connect 
         run: |  
             # Authenticate to PROD Databricks
             databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt
             # Import notebooks to PROD workspace
-            databricks workspace import_dir /tmp/dev_notebooks Shared --overwrite
+            databricks workspace import /tmp/dev_notebooks/DQ.py Shared --overwrite
 
     # env:
     #   DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
