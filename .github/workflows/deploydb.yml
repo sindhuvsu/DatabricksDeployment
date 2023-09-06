@@ -21,39 +21,33 @@ jobs:
       - name: Install Databricks CLI
         run: pip install databricks-cli
 
-
-      - name: test connect 2
-        run: |
-          # Authenticate to DEV Databricks
-          echo "$DEV_DATABRICKS_HOST" 
-
-      - name: Deploy Notebooks 1 connect 0
+      - name: create token files
         run: |
           # save tokens
-          echo "$DEV_DATABRICKS_TOKEN" > dev_token_file.txt
-          echo "PROD_DATABRICKS_TOKEN" > prod_token_file.txt
+          echo $DEV_DATABRICKS_TOKEN > tmp/dev_token_file.txt
+          echo $PROD_DATABRICKS_TOKEN > tmp/prod_token_file.txt
 
       - name: Deploy Notebooks 1 connect test
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file dev_token_file.txt
+          databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file tmp/dev_token_file.txt
         
       - name: Deploy Notebooks 1 connect test 2
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file tmp/dev_token_file.txt
 
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file tmp/dev_token_file.txt
           # Export notebooks from DEV workspace
           databricks workspace export_dir Shared/DQ.py /tmp/dev_notebooks
 
       - name: Deploy Notebooks 2 connect 
         run: |  
             # Authenticate to PROD Databricks
-            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt
+            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file tmp/prod_token_file.txt
             # Import notebooks to PROD workspace
             databricks workspace import_dir /tmp/dev_notebooks Shared --overwrite
 
