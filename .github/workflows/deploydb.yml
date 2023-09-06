@@ -36,7 +36,7 @@ jobs:
       - name: Deploy Notebooks 1 connect test 2
         run: |
           # Authenticate to DEV Databricks
-          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt --debug
 
       - name: Deploy Notebooks 1 connect
         run: |
@@ -46,7 +46,7 @@ jobs:
       - name: Deploy Notebooks 2 connect 
         run: |  
             # Authenticate to PROD Databricks
-            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt
+            databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt --debug
             # Import notebooks to PROD workspace
             databricks workspace import /dev_notebooks/DQ Shared --overwrite --debug
 
