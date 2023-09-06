@@ -33,15 +33,13 @@ jobs:
       #     # Authenticate to DEV Databricks
       #     databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file dev_token_file.txt
         
-      # - name: Deploy Notebooks 1 connect test 2
-      #   run: |
-      #     # Authenticate to DEV Databricks
-      #     databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
-
-      - name: Deploy Notebooks 1 connect
+      - name: Deploy Notebooks 1 connect test 2
         run: |
           # Authenticate to DEV Databricks
           databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
+
+      - name: Deploy Notebooks 1 connect
+        run: |
           # Export notebooks from DEV workspace
           databricks workspace export /Shared/DQ dev_notebooks
 
