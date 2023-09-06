@@ -24,8 +24,8 @@ jobs:
       - name: create token files
         run: |
           # save tokens
-          echo $DEV_DATABRICKS_TOKEN > tmp/dev_token_file.txt
-          echo $PROD_DATABRICKS_TOKEN > tmp/prod_token_file.txt
+          echo ${{ secrets.DEV_DATABRICKS_HOST }} > tmp/dev_token_file.txt
+          echo ${{ secrets.PROD_DATABRICKS_HOST }} > tmp/prod_token_file.txt
 
       - name: Deploy Notebooks 1 connect test
         run: |
