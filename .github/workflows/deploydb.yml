@@ -41,14 +41,14 @@ jobs:
       - name: Deploy Notebooks 1 connect
         run: |
           # Export notebooks from DEV workspace
-          databricks workspace export /Shared/DQ /dev_notebooks
+          databricks workspace export /Shared/DQ /dev_notebooks/ --debug
 
       - name: Deploy Notebooks 2 connect 
         run: |  
             # Authenticate to PROD Databricks
             databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt
             # Import notebooks to PROD workspace
-            databricks workspace import /dev_notebooks/DQ Shared --overwrite
+            databricks workspace import /dev_notebooks/DQ Shared --overwrite --debug
 
     # env:
     #   DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
