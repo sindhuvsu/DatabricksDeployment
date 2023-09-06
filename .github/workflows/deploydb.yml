@@ -33,8 +33,16 @@ jobs:
           echo "$DEV_DATABRICKS_TOKEN" > dev_token_file.txt
           echo "PROD_DATABRICKS_TOKEN" > prod_token_file.txt
 
+      - name: Deploy Notebooks 1 connect test
+        run: |
+          # Authenticate to DEV Databricks
+          databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file dev_token_file.txt
+        
+      - name: Deploy Notebooks 1 connect test 2
+        run: |
+          # Authenticate to DEV Databricks
+          databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt
 
-          
       - name: Deploy Notebooks 1 connect
         run: |
           # Authenticate to DEV Databricks
