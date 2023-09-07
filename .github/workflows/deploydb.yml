@@ -1,62 +1,3 @@
-# name: Deploy Notebooks from DEV to PROD
-
-# on:
-#   push:
-#     branches:
-#       - main  # You can customize this branch as needed
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v2
-
-#       - name: Set Up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: 3.x  # Use the version you need
-
-#       - name: Install Databricks CLI
-#         run: pip install databricks-cli
-
-#       - name: create token files
-#         run: |
-#           # save tokens
-#           echo ${{ secrets.DEV_DATABRICKS_HOST }} > dev_token_file.txt
-#           echo ${{ secrets.PROD_DATABRICKS_HOST }} > prod_token_file.txt
-#           mkdir dev_notebooks
-
-#       # - name: Deploy Notebooks 1 connect test
-#       #   run: |
-#       #     # Authenticate to DEV Databricks
-#       #     databricks configure --host "$DEV_DATABRICKS_HOST"  --token-file dev_token_file.txt
-        
-#       - name: Deploy Notebooks 1 connect test 2
-#         run: |
-#           # Authenticate to DEV Databricks
-#           databricks configure --host "${{ secrets.DEV_DATABRICKS_HOST }}"  --token-file dev_token_file.txt --debug
-
-#       - name: Deploy Notebooks 1 connect
-#         run: |
-#           # Export notebooks from DEV workspace
-#           databricks workspace export /Shared/DQ /dev_notebooks/ --debug
-
-#       - name: Deploy Notebooks 2 connect 
-#         run: |  
-#             # Authenticate to PROD Databricks
-#             databricks configure --host "${{ secrets.PROD_DATABRICKS_HOST }}"  --token-file prod_token_file.txt --debug
-#             # Import notebooks to PROD workspace
-#             databricks workspace import /dev_notebooks/DQ Shared --overwrite --debug
-
-#     # env:
-#     #   DEV_DATABRICKS_HOST: ${{ secrets.DEV_DATABRICKS_HOST }}
-#     #   DEV_DATABRICKS_TOKEN: ${{ secrets.DEV_DATABRICKS_TOKEN }}
-#     #   PROD_DATABRICKS_HOST: ${{ secrets.PROD_DATABRICKS_HOST }}
-#     #   PROD_DATABRICKS_TOKEN: ${{ secrets.PROD_DATABRICKS_TOKEN }}
-
-
 name: Deploy Notebooks to Databricks PROD
 
 on:
@@ -80,22 +21,18 @@ jobs:
     - name: Export Notebooks from DEV
       run: |
         # Set up the Databricks REST API URL for your DEV workspace
-        DEV_API_URL="https://adb-2018411685203693.13.azuredatabricks.net/api/2.0/workspace/export"
+        DEV_API_URL="$DATABRICKS_HOST_DEV/api/2.0/workspace/export"
 
         curl --location "$DEV_API_URL?path=%2FShared%2Ftest_folder&format=DBC&direct_download=true"         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  -o test_folder
       
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
-
-    # - name: unzip export.zip
-    #   run: |
-    #     # Unzip the exported files
-    #     unzip -q test_folder.zip -d test_folder
+        DATABRICKS_HOST_DEV: ${{ secrets.DEV_DATABRICKS_HOST }}
 
     - name: Set up Databricks CLI for PROD
       run: |
         # Configure the Databricks REST API URL for your PROD workspace
-        PROD_API_URL="https://adb-5951603250312424.4.azuredatabricks.net/api/2.0/workspace/import"
+        PROD_API_URL="$DATABRICKS_HOST_PROD/api/2.0/workspace/import"
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
@@ -105,7 +42,8 @@ jobs:
 
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+        DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
 
-    # - name: Clean up
-    #   run: |
-    #     rm test_folder  # Remove temporary export directory
+    - name: Clean up
+      run: |
+        rm test_folder  # Remove temporary export directory
