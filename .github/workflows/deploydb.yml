@@ -82,7 +82,7 @@ jobs:
         # Set up the Databricks REST API URL for your DEV workspace
         DEV_API_URL="https://adb-2018411685203693.13.azuredatabricks.net/api/2.0/workspace/export"
 
-        curl --location "$DEV_API_URL?path=%2FShared%2Ftest_folder&format=DBC&direct_download=true"         --header "Authorization: Bearer dapif5d644c72146c693ee16881347de95d7-3"  -o test_folder.zip
+        curl --location "$DEV_API_URL?path=%2FShared%2Ftest_folder&format=DBC&direct_download=true"         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  -o test_folder
       
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
@@ -98,7 +98,7 @@ jobs:
         PROD_API_URL="https://adb-5951603250312424.4.azuredatabricks.net/api/2.0/workspace/import"
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
-          --header "Authorization: Bearer dapie077c7a852d3ac9c57b2e1ff57b502de-3" \
+          --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@test_folder" \
           --form "path=/Shared/test_folder" \
           --form "format=DBC" 
