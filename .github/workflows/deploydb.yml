@@ -82,8 +82,8 @@ jobs:
         # Set up the Databricks REST API URL for your DEV workspace
         DEV_API_URL="https://adb-2018411685203693.13.azuredatabricks.net/api/2.0/workspace/export"
 
-        curl --location "$DEV_API_URL?path=%2FShared%2FDQ&format=JUPYTER&direct_download=true" 
-        --header "Authorization: Bearer dapif5d644c72146c693ee16881347de95d7-3" 
+        curl --location "$DEV_API_URL?path=%2FShared%2FDQ&format=JUPYTER&direct_download=true" \
+        --header "Authorization: Bearer dapif5d644c72146c693ee16881347de95d7-3" \
         -o DQ.py -v
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
@@ -98,10 +98,10 @@ jobs:
         # Configure the Databricks REST API URL for your PROD workspace
         PROD_API_URL="https://adb-5951603250312424.4.azuredatabricks.net/api/2.0/workspace/import"
         
-        curl --location "$PROD_API_URL?path=Shared%2FDQ%2F&language=PYTHON&overwrite=true" 
-          --header "Authorization: Bearer dapie077c7a852d3ac9c57b2e1ff57b502de-3" 
-          --form "content=@DQ.py" 
-          --form "path=/Shared/DQ_new" 
+        curl --location "$PROD_API_URL?path=Shared%2FDQ%2F&language=PYTHON&overwrite=true" \
+          --header "Authorization: Bearer dapie077c7a852d3ac9c57b2e1ff57b502de-3" \
+          --form "content=@DQ.py" \
+          --form "path=/Shared/DQ_new" \
           --form "format=JUPYTER" 
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
