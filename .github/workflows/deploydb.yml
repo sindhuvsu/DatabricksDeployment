@@ -88,10 +88,10 @@ jobs:
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
 
-    - name: unzip export.zip
-      run: |
-        # Unzip the exported files
-        unzip -q export.zip -d dev_notebooks
+    # - name: unzip export.zip
+    #   run: |
+    #     # Unzip the exported files
+    #     unzip -q export.zip -d dev_notebooks
 
     - name: Set up Databricks CLI for PROD
       run: |
