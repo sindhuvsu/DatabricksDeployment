@@ -86,7 +86,7 @@ jobs:
         # Use the DATABRICKS_TOKEN_DEV secret
         curl -X GET "$DEV_API_URL" \
           -H "Authorization: Bearer $DATABRICKS_TOKEN_DEV" \
-          -o export.zip
+          -o export.zip -v
 
         # Unzip the exported files
         unzip -q export.zip -d dev_notebooks
@@ -105,7 +105,7 @@ jobs:
           -F "path=/Shared/PROD" \
           -F "format=SOURCE" \
           -F "content=@dev_notebooks" \
-          -o import_result.json
+          -o import_result.json -v
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
 
