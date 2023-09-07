@@ -80,7 +80,7 @@ jobs:
     - name: Export Notebooks from DEV
       run: |
         # Set up the Databricks REST API URL for your DEV workspace
-        DEV_API_URL="${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export?path=/Shared/DQ.py&format=SOURCE""
+        DEV_API_URL="${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export?path=/Shared/DQ.py&format=SOURCE"
 
         curl -X GET "$DEV_API_URL" \
           -H "Authorization: Bearer $DATABRICKS_TOKEN_DEV" \
