@@ -80,13 +80,11 @@ jobs:
     - name: Export Notebooks from DEV
       run: |
         # Set up the Databricks REST API URL for your DEV workspace
-        DEV_API_URL="${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export"
+        DEV_API_URL="${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export?path=/Shared/DQ.py&format=SOURCE""
 
-        # Replace <DEV_DATABRICKS_HOST> with your DEV Databricks host URL
-        # Use the DATABRICKS_TOKEN_DEV secret
         curl -X GET "$DEV_API_URL" \
           -H "Authorization: Bearer $DATABRICKS_TOKEN_DEV" \
-          -o export.zip -v
+          -o DQ.py -v
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
 
@@ -100,13 +98,11 @@ jobs:
         # Configure the Databricks REST API URL for your PROD workspace
         PROD_API_URL="${{ secrets.PROD_DATABRICKS_HOST }}/api/2.0/workspace/import"
 
-        # Replace <PROD_DATABRICKS_HOST> with your PROD Databricks host URL
-        # Use the DATABRICKS_TOKEN_PROD secret
         curl -X POST "$PROD_API_URL" \
           -H "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-          -F "path=/Shared/PROD" \
+          -F "path=/Shared/PROD/DQ.py" \
           -F "format=SOURCE" \
-          -F "content=@dev_notebooks" \
+          -F "content=@DQ.py" \
           -o import_result.json -v
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
