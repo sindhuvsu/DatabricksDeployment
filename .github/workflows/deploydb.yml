@@ -80,7 +80,7 @@ jobs:
     - name: Export Notebooks from DEV
       run: |
         # Set up the Databricks REST API URL for your DEV workspace
-        DEV_API_URL="https://${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export"
+        DEV_API_URL="${{ secrets.DEV_DATABRICKS_HOST }}/api/2.0/workspace/export"
 
         # Replace <DEV_DATABRICKS_HOST> with your DEV Databricks host URL
         # Use the DATABRICKS_TOKEN_DEV secret
@@ -96,7 +96,7 @@ jobs:
     - name: Set up Databricks CLI for PROD
       run: |
         # Configure the Databricks REST API URL for your PROD workspace
-        PROD_API_URL="https://${{ secrets.PROD_DATABRICKS_HOST }}/api/2.0/workspace/import"
+        PROD_API_URL="${{ secrets.PROD_DATABRICKS_HOST }}/api/2.0/workspace/import"
 
         # Replace <PROD_DATABRICKS_HOST> with your PROD Databricks host URL
         # Use the DATABRICKS_TOKEN_PROD secret
