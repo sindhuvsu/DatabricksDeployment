@@ -12,6 +12,10 @@ spark.conf.set("spark.databricks.delta.enabled", "false")
 
 # COMMAND ----------
 
+#!pip install azure-identity
+
+# COMMAND ----------
+
 !pip install azure-storage-blob
 
 

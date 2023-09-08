@@ -59,6 +59,10 @@ display(df_test)
 
 # COMMAND ----------
 
+#display(df_test)
+
+# COMMAND ----------
+
 # Purchase_Order=df_test.select("BestellungNr").distinct().rdd.flatMap(lambda x: x).collect()
 # print(Purchase_Order)
 # exists = df_table.filter(df_table.BestellungNr==Purchase_Order[0]).count() > 0
