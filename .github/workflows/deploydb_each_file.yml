@@ -59,7 +59,7 @@ jobs:
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
           --form "path=/Shared" \
-          --form "format=JUPYTER" \
+          --form "format=SOURCE" \
           --form "overwrite=true"
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
@@ -74,8 +74,8 @@ jobs:
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
-          --form "path=/Shared/test_folder" \
-          --form "format=JUPYTER" \
+          --form "path=/Shared" \
+          --form "format=SOURCE" \
           --form "overwrite=true"
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
