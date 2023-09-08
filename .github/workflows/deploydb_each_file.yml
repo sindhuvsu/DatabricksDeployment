@@ -59,7 +59,7 @@ jobs:
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
           --form "path=/Shared" \
-          --form "format=SOURCE" \
+          --form "format=AUTO" \
           --form "overwrite=true"
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
@@ -75,7 +75,7 @@ jobs:
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
           --form "path=/Shared" \
-          --form "format=SOURCE" \
+          --form "format=AUTO" \
           --form "overwrite=true"
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
