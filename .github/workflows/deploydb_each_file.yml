@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@main
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -25,7 +25,7 @@ jobs:
 
         curl --location "$DEV_API_URL?path=%2FShared&format=JUPYTER&direct_download=true"         \
         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  \
-        -o $NOTEBOOK_NAME
+        -o $NOTEBOOK_NAME -v
       # Configure the Databricks REST API URL for your PROD workspace
 
       env:
@@ -40,9 +40,9 @@ jobs:
 
         curl --location "$DEV_API_URL?path=%2FShared&format=JUPYTER&direct_download=true"         \
         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  \
-        -o $NOTEBOOK_NAME
+        -o $NOTEBOOK_NAME -v
       # Configure the Databricks REST API URL for your PROD workspace
-      
+
 
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
@@ -61,7 +61,7 @@ jobs:
           --form "content=@$NOTEBOOK_NAME" \
           --form "path=/Shared" \
           --form "format=AUTO" \
-          --form "overwrite=true"
+          --form "overwrite=true" -v
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
         DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
@@ -77,7 +77,7 @@ jobs:
           --form "content=@$NOTEBOOK_NAME" \
           --form "path=/Shared" \
           --form "format=AUTO" \
-          --form "overwrite=true"
+          --form "overwrite=true" -v
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
         DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
