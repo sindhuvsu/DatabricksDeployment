@@ -1,50 +1,54 @@
-# name: Deploy Notebooks to Databricks PROD
+name: Deploy Notebooks to Databricks PROD
 
-# on:
-#   push:
-#     branches:
-#       - main  # Modify this to your main branch
+on:
+  push:
+    branches:
+      - main  # Modify this to your main branch
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@main
 
-#     - name: Set up Python
-#       uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.x'  # Use the appropriate Python version
-
-#     - name: Export Notebooks from DEV
-#       run: |
-#         # Set up the Databricks REST API URL for your DEV workspace
-#         DEV_API_URL="$DATABRICKS_HOST_DEV/api/2.0/workspace/export"
-
-#         curl --location "$DEV_API_URL?path=%2FShared%2Ftest_folder&format=DBC&direct_download=true"         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  -o test_folder
-#       # Configure the Databricks REST API URL for your PROD workspace
-
-#       env:
-#         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
-#         DATABRICKS_HOST_DEV: ${{ secrets.DEV_DATABRICKS_HOST }}
-
-#     - name: Set up Databricks CLI for PROD
-#       run: |
-#         # Configure the Databricks REST API URL for your PROD workspace
-#         PROD_API_URL="$DATABRICKS_HOST_PROD/api/2.0/workspace/import"
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'  # Use the appropriate Python version
         
-#         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
-#           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-#           --form "content=@test_folder" \
-#           --form "path=/Shared/test_folder" \
-#           --form "format=DBC" 
+    - name: Set up Databricks CLI for PROD notebook1
+      run: |
+        # Configure the Databricks REST API URL for your PROD workspace
+        PROD_API_URL="$DATABRICKS_HOST_PROD/api/2.0/workspace/import"
+        
+        curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
+          --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
+          --form "content=@/Shared/$NOTEBOOK_NAME" \
+          --form "path=/Shared/$NOTEBOOK_NAME" \
+          --form "format=AUTO" \
+          --form "overwrite=true" -v
+      env:
+        DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+        DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
+        NOTEBOOK_NAME: "DQ"
 
-#       env:
-#         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
-#         DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
-
-#     # - name: Clean up
-#     #   run: |
-#     #     rm test_folder  # Remove temporary export directory
+    - name: Set up Databricks CLI for PROD notebook2
+      run: |
+        # Configure the Databricks REST API URL for your PROD workspace
+        PROD_API_URL="$DATABRICKS_HOST_PROD/api/2.0/workspace/import"
+        
+        curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
+          --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
+          --form "content=@/Shared/$NOTEBOOK_NAME" \
+          --form "path=/Shared/$NOTEBOOK_NAME" \
+          --form "format=AUTO" \
+          --form "overwrite=true" -v
+      env:
+        DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
+        DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
+        NOTEBOOK_NAME: "DQ_AAA"
+    # - name: Clean up
+    #   run: |
+    #     rm test_folder  # Remove temporary export directory
