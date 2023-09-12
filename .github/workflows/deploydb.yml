@@ -38,7 +38,7 @@ jobs:
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
         DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
-        NOTEBOOK_NAME: "DQ"
+        NOTEBOOK_NAME: DQ
 
     - name: Set up Databricks CLI for PROD notebook2
       run: |
@@ -54,7 +54,7 @@ jobs:
       env:
         DATABRICKS_TOKEN_PROD: ${{ secrets.PROD_DATABRICKS_TOKEN }}
         DATABRICKS_HOST_PROD: ${{ secrets.PROD_DATABRICKS_HOST }}
-        NOTEBOOK_NAME: "DQ_AAA"
+        NOTEBOOK_NAME: DQ_AAA
     # - name: Clean up
     #   run: |
     #     rm test_folder  # Remove temporary export directory
