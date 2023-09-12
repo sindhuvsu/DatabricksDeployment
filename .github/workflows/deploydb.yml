@@ -17,7 +17,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'  # Use the appropriate Python version
-        
+    - name: check files
+      run: |
+        ls
+    - name: cd and check files
+      run: |
+        cd notebooks/Shared
+        ls
     - name: Set up Databricks CLI for PROD notebook1
       run: |
         # Configure the Databricks REST API URL for your PROD workspace
@@ -25,7 +31,7 @@ jobs:
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-          --form "content=@/Shared/$NOTEBOOK_NAME" \
+          --form "content=@notebooks/Shared/$NOTEBOOK_NAME" \
           --form "path=/Shared/$NOTEBOOK_NAME" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
@@ -41,7 +47,7 @@ jobs:
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-          --form "content=@/Shared/$NOTEBOOK_NAME" \
+          --form "content=@notebooks/Shared/$NOTEBOOK_NAME" \
           --form "path=/Shared/$NOTEBOOK_NAME" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
