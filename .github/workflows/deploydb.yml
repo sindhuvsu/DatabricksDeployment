@@ -24,6 +24,11 @@ jobs:
       run: |
         cd notebooks/Shared
         ls
+    - name: cd and check files
+      run: |
+        cd ..
+        cd ..
+        ls
     - name: Set up Databricks CLI for PROD notebook1
       run: |
         # Configure the Databricks REST API URL for your PROD workspace
@@ -31,8 +36,8 @@ jobs:
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-          --form "content=@DQ.py" \
-          --form "path=/Shared/$NOTEBOOK_NAME" \
+          --form "content=@notebooks/Shared/DQ.py" \
+          --form "path=/Shared/DQ.py" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
       env:
@@ -47,8 +52,8 @@ jobs:
         
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
-          --form "content=@DQ_AAA.py" \
-          --form "path=/Shared/$NOTEBOOK_NAME" \
+          --form "content=@notebooks/Shared/DQ_AAA.py" \
+          --form "path=/Shared/DQ_AAA.py" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
       env:
