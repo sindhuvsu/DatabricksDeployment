@@ -42,6 +42,7 @@ jobs:
         --header "Authorization: Bearer $DATABRICKS_TOKEN_DEV"  \
         -o $NOTEBOOK_NAME
       # Configure the Databricks REST API URL for your PROD workspace
+      
 
       env:
         DATABRICKS_TOKEN_DEV: ${{ secrets.DEV_DATABRICKS_TOKEN }}
