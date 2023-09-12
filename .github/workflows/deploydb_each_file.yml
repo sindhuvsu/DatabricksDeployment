@@ -59,7 +59,7 @@ jobs:
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
-          --form "path=/Shared" \
+          --form "path=/Shared/$NOTEBOOK_NAME" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
       env:
@@ -75,7 +75,7 @@ jobs:
         curl --location "$PROD_API_URL?language=PYTHON&overwrite=true" \
           --header "Authorization: Bearer $DATABRICKS_TOKEN_PROD" \
           --form "content=@$NOTEBOOK_NAME" \
-          --form "path=/Shared" \
+          --form "path=/Shared/$NOTEBOOK_NAME" \
           --form "format=AUTO" \
           --form "overwrite=true" -v
       env:
